@@ -1,0 +1,249 @@
+/*Font-Faces*/
+@font-face {
+    font-family: "Congenial-Black";
+    src: url("fonts/Black.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Bold";
+    src: url("fonts/Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-ExtraLight";
+    src: url("fonts/ExtraLight.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Hairline";
+    src: url("fonts/Hairline.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Heavy";
+    src: url("fonts/Heavy.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Light";
+    src: url("fonts/Light.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Medium";
+    src: url("fonts/Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Regular";
+    src: url("fonts/Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Congenial-Thin";
+    src: url("fonts/Thin.ttf") format("truetype");
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    background-color: rgb(0, 75, 173);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+h1 {
+    font-weight: 500;
+}
+
+/*Columns*/
+.row {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto auto;
+}
+
+.formContainer {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+}
+
+.container {
+    width: 80%;
+    min-height: 80%;
+    background-color: rgb(243, 243, 243);
+    border-radius: 50px;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.title {
+    border-radius: 50px 50px 0 0;
+    text-align: center;
+    background-color: rgb(133, 133, 255);
+    color: white;
+    padding: 10px;
+    margin: 0;
+}
+
+.form {
+    padding: 20px;
+    width: 90%;
+}
+
+.question {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+.label {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.input, select, button {
+    border: 0.25px solid gray;
+    outline: none;
+    width: 20%;
+    padding: 3px;
+    border-radius: 5px;
+    flex: 1;
+}
+
+input:focus {
+    outline: none;
+}
+
+.downloadButton {
+    padding: 15px;
+    background-color:rgb(133, 133, 255);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
+
+:root {
+    --partGray: #e1e1e1;
+    --black: #000000;
+    --white: #ffffff;
+    --lightGray: #d2d2d2;
+    --darkGray: #949494;
+    --blue: #2d4a9a;
+    --lightBlue: #e7e9ef;
+}
+
+/*Edges*/
+.calendarWhite {
+    background-color: white;
+    padding: 30px 20px;
+    padding-top: 30px;
+    width: 100%;
+}
+
+.calendarBorder {
+    border: 6px solid var(--blue);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+/*CalendarHeader*/
+.calendarHeader {
+    padding: 0px 10px;
+    background-color: var(--white);
+    font-family: "Congenial-Thin";
+    position: relative; 
+    top: -25px;
+    margin-left: 20px;
+    float: left;
+}
+
+#calendarTitle {
+    font-size: 42px;
+    color: var(--blue);
+    font-family: "Congenial-Black";
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0;
+}
+
+/*calendarTop*/
+.calendarLegend {
+    background-color: var(--lightBlue);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.calendarH2 {
+    margin: 1;
+    font-size: 30px;
+}
+
+.shape {
+    margin-left: 7px;
+    margin-right: 7px;
+    margin-top: 15px;
+}
+
+.calShape {
+    margin-top: 3px;
+    margin-left: 0;
+}
+
+/*Calendar*/
+.calendarPadding {
+    background-color: var(--lightBlue);
+    padding: 7px;
+}
+
+.calendar {
+    border-radius: 5px;
+    width: 100%;
+    font-family: "Congenial-Thin";
+
+    border-collapse: separate;
+    border-spacing: 0 0.7em;
+    border: none;
+    table-layout: fixed;
+}
+
+.calendarRow {
+    background-color: var(--partGray);
+}
+
+.calendarTD,
+.calendarTH {
+    padding: 10px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    width: 14%;
+}
+
+.calendarTD:first-child,
+.calendarTH:first-child {
+    border-left: none;
+}
+
+.calendarTD:last-child,
+.calendarTH:last-child {
+    border-right: none;
+}
+
+.calTop {
+    text-align: center;
+    background-color: var(--lightGray);
+    border-radius: 20px;
+}
+
+.calenLine {
+    position: relative; 
+    top: -12px;
+    height: 8px;
+    border-radius: 5px;
+    color: var(--partGray);
+    z-index: 2;
+}

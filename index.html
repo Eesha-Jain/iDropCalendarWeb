@@ -11,6 +11,8 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
+        <script src="https://kit.fontawesome.com/6981eea73f.js" crossorigin="anonymous"></script>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
     </head>
@@ -63,7 +65,7 @@
                 var string = "";
 
                 for (var i = 1; i <= num; i++) {
-                    string += "<div class='question'><label class='label' for='medname" + i + "'>What is drop " + i + "'s name?</label><input class='input' name='medname" + i + "' id='medname" + i + "' required><br></div>";
+                    string += "<div class='question'><label class='label' for='medname" + i + "'>Name of drop " + i + "</label><input class='input' name='medname" + i + "' id='medname" + i + "' required><br></div>";
                     string += '<br><input type="checkbox" name="medmor' + i + '" id="medmor' + i + '"><label name="medmor' + i + '">I take drop ' + i + ' in the morning</label>';
                     string += '<br><input type="checkbox" name="medaft' + i + '" id="medaft' + i + '"><label  name="medaft' + i + '">I take drop ' + i + ' in the afternoon</label>';
                     string += '<br><input type="checkbox" name="mednig' + i + '" id="mednig' + i + '"><label name="mednig' + i + '">I take drop ' + i + ' in the night</label><br><br>';
@@ -75,29 +77,77 @@
                 return false;
             }
 
-            function generatePDF() {
+            async function generatePDF() {
                 document.getElementById("hidden").style.display = "block";
-                document.getElementById("hidden").style.width = "1300px";
-                document.getElementById("hidden").style.height = "1150px";
+                document.getElementById("hidden").style.width = "1350px";
 
-                window.scrollTo(0,0);
-                html2canvas(document.getElementById("hidden"), {
-                    width: 1350,
-                    height: 1150,
-                }).then(canvas => {
-                    var imgData = canvas.toDataURL('calendar/png');
-                    var doc = new jsPDF('l', 'mm');
-                    doc.addImage(imgData, 'PNG', 5, 5, 290, 230);
-                    doc.addPage();
-                    doc.addImage(imgData, 'PNG', 5, 5, 290, 230);
-                    doc.save('NanodropperCalendar.pdf');
-                });
+                var doc = new jsPDF('l', 'mm');
+                var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
 
+                for (var i = 0; i < stringHTML.length; i++) {
+                    stringHTML[i].style.display = "block";
+                    window.scrollTo(0,0);
+
+                    await html2canvas(stringHTML[i], {
+                        width: 1400,
+                        height: 1400,
+                    }).then(canvas => {
+                        var imgData = canvas.toDataURL('calendar/png');
+                        doc.addImage(imgData, 'PNG', 5, 5, 290, 230);
+                        
+                        if (i + 1 != stringHTML.length) {
+                            doc.addPage();
+                        }
+                    });
+                    stringHTML[i].style.display = "none";
+                }
+
+                doc.save('NanodropperCalendar.pdf');
                 document.getElementById("hidden").style.display = "none";
             }
 
+            function generateCalendar(month, str, calDays, total) {
+                return `
+                <div class="calendarBox">
+                    <div class="calendarWhite">
+                        <div class="calendarHeader">
+                            <div>
+                                <h2 id="calendarTitle">Nanodropper Calendar</h2>
+                                <img src="NanodropperLogo.png" width="50" height="50"/>
+                            </div>
+                        </div>
+                            
+                        <div class="calendarBorder">
+                            <div class="calendarTop row">
+                                <div class="calendarGenericInfo">
+                                    <p class="calendarH2">MONTH: ${month}</p>
+                                    <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
+                                    <p>INSTRUCTIONS FOR USE: Take <i class="fas fa-cloud-sun"></i> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the box for that drop.</p>
+                                </div>
+                                <div class="calendarLegend">${str}</div>
+                            </div>
+
+                            <br>
+                            <br>
+
+                            <div class="calendarPadding">
+                                <table class="calendar">
+                                    ${calDays}
+                                    ${total}
+                                </table>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                `;
+            }
+
+            function daysInMonth(month, year) {
+                return new Date(year, month, 0).getDate();
+            }
+
             function medicationDetails() {
-                var months = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
                 //Diamond & triangle from https://idevie.com/tutorials/make-shapes-with-css-how-to-create-different-shapes-in-css
                 var shapes = [['square', 'width: 15px; height: 15px;border:2px solid #293caa;'],['circle', 'width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4;'],['diamond', 'width: 13px; height: 13px; -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg);border:2px solid #7f7dde;'], ['triangle', 'width: 15px; height: 15px; -webkit-transform: skew(20deg); -moz-transform: skew(20deg); -o-transform: skew(20deg); border: 2px solid #5d8abd;']];
@@ -136,7 +186,7 @@
                 calDays += "</tr>";
                 
                 //Creating the morning row in a calendar day
-                var times = [['morning', 'M', '', '', '', ''],['afternoon', 'A', '', '', '', ''], ['night', 'N', '', '', '', '']];
+                var times = [['morning', '<i class="fas fa-cloud-sun"></i>', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
                 var i = 2;
 
                 for (var key in grid) {
@@ -155,63 +205,50 @@
                     i++;
                 }
 
+                //Create the things necessary for calendar
                 var doses = "<table style='width: 100%;'>";
                 for (var j = 0; j < 3; j++) {
                     doses += "<tr><td>" + times[j][1] + "</td><td>" + times[j][2] + "</td><td>" + times[j][3] + "</td><td>" + times[j][4] + "</td><td>" + times[j][5] + "</td></tr>";
                 }
                 doses += "</table>";
 
-                //Creating a single day on the calendar
-                var singleDay = `
-                <td class='calendarTD' class='calendarDay'>
-                    <div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:0.5px solid black !important;width:20px !important; height: 20px !important;"></div><br>
-                    ${doses}
-                </td>`;
-
                 //Generating the calendar based on the days
-                var total = "";
-                for (var i = 0; i < 4; i++) {
-                    total += "<tr class='calendarRow'>";
-                    for (var j = 0; j < 7; j++) {
-                        total += singleDay;
+                var today = new Date();
+                var daysLeft = Number((new Date(appointment).getTime() - today.getTime()) / (1000 * 3600 * 24)) + 2;
+                var finalCalendar = "";
+                var month = today.getMonth();
+
+                while (daysLeft > 0) {
+                    var total = "";
+                    var day = 1;
+                    var dayMonth = daysInMonth(month, today.getFullYear());
+                    var dayOfTheWeek = new Date(today.getFullYear(), month, 1).getDay();
+
+                    for (var i = 0; i < 5; i++) {
+                        total += "<tr class='calendarRow'>";
+                        for (var j = 0; j < 7; j++) {
+                            total += "<td class='calendarTD' class='calendarDay'>";
+
+                            if (dayOfTheWeek == 0 && day <= dayMonth) {
+                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:0.5px solid black !important;width:20px !important; height: 20px !important; text-align: center;">${day}</div><br>
+                                    ${doses}`;
+                                day++;
+                            } else {
+                                dayOfTheWeek--;
+                            }
+
+                            total += "</td>"
+                        }
+                        total += "</tr>";
                     }
-                    total += "</tr>";
+
+                    //Final output
+                    finalCalendar += generateCalendar(months[month], str, calDays, total) + "<br class='breaker'>";
+                    daysLeft -= dayMonth;
+                    day = 1;
+                    month++;
                 }
-
-                //Final output
-                var finalCalendar = `
-                <div class="calendarBox">
-                    <div class="calendarWhite">
-                        <div class="calendarHeader">
-                            <div>
-                                <h2 id="calendarTitle">Nanodropper Calendar</h2>
-                                <img src="NanodropperLogo.png" width="50" height="50"/>
-                            </div>
-                        </div>
-                            
-                        <div class="calendarBorder">
-                            <div class="calendarTop row">
-                                <div class="calendarGenericInfo">
-                                    <p class="calendarH2">MONTH: ${months[new Date().getMonth()]}</p>
-                                    <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
-                                </div>
-                                <div class="calendarLegend">${str}</div>
-                            </div>
-
-                            <br>
-                            <br>
-
-                            <div class="calendarPadding">
-                                <table class="calendar">
-                                    ${calDays}
-                                    ${total}
-                                </table>
-                            </div>
-                        </div>
-                    </div> 
-                </div>
-                `;
-
+                
                 var output = `
                 <form>
                 <p>Your custom generated calendar is made!</p><br><br>
@@ -224,7 +261,7 @@
                     ${finalCalendar}
                 </div>
                 </form>
-                `
+                `;
 
                 document.getElementById("calendarOutput").innerHTML = output;
                 document.getElementById("secondForm").style.display = "none";

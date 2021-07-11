@@ -1,60 +1,23 @@
-/*Font-Faces*/
-@font-face {
-    font-family: "Congenial-Black";
-    src: url("fonts/Black.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Bold";
-    src: url("fonts/Bold.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-ExtraLight";
-    src: url("fonts/ExtraLight.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Hairline";
-    src: url("fonts/Hairline.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Heavy";
-    src: url("fonts/Heavy.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Light";
-    src: url("fonts/Light.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Medium";
-    src: url("fonts/Medium.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Regular";
-    src: url("fonts/Regular.ttf") format("truetype");
-}
-
-@font-face {
-    font-family: "Congenial-Thin";
-    src: url("fonts/Thin.ttf") format("truetype");
+:root {
+    --partGray: #e1e1e1;
+    --black: #000000;
+    --white: #ffffff;
+    --lightGray: #d2d2d2;
+    --darkGray: #949494;
+    --blue: #2A3B9F;
+    --lightBlue: #EDF0F7;
 }
 
 html, body {
     margin: 0;
     padding: 0;
     scroll-behavior: smooth;
-    background-color: rgb(0, 75, 173);
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 300;
 }
 
 h1 {
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /*Columns*/
@@ -86,7 +49,7 @@ i {
 .title {
     border-radius: 50px 50px 0 0;
     text-align: center;
-    background-color: rgb(133, 133, 255);
+    background-color: var(--blue);
     color: white;
     padding: 10px;
     margin: 0;
@@ -123,22 +86,12 @@ input:focus {
 
 .downloadButton {
     padding: 15px;
-    background-color:rgb(133, 133, 255);
+    background-color:var(--blue);
     color: white;
     border-radius: 10px;
     text-decoration: none;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 16px;
-}
-
-:root {
-    --partGray: #e1e1e1;
-    --black: #000000;
-    --white: #ffffff;
-    --lightGray: #d2d2d2;
-    --darkGray: #949494;
-    --blue: #2d4a9a;
-    --lightBlue: #e7e9ef;
 }
 
 /*Edges*/
@@ -159,7 +112,8 @@ input:focus {
 .calendarHeader {
     padding: 0px 10px;
     background-color: var(--white);
-    font-family: "Congenial-Thin";
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
     position: relative; 
     top: -25px;
     margin-left: 20px;
@@ -169,7 +123,8 @@ input:focus {
 #calendarTitle {
     font-size: 42px;
     color: var(--blue);
-    font-family: "Congenial-Black";
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 800;
     float: left;
     margin-top: 0px;
     margin-bottom: 0;
@@ -207,8 +162,8 @@ input:focus {
 .calendar {
     border-radius: 5px;
     width: 100%;
-    font-family: "Congenial-Thin";
-
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
     border-collapse: separate;
     border-spacing: 0 0.7em;
     border: none;

@@ -55,6 +55,7 @@
         <script>
             var appointment = "";
             var medNum = 0;
+            var doc;
 
             function medicationSubmit() {
                 var num = document.getElementById("#medication").value;
@@ -77,11 +78,16 @@
                 return false;
             }
 
+            function renderedPDF(canvas) {
+                var imgData = canvas.toDataURL('calendar/png');
+                doc.addImage(imgData, 'PNG', 18, 5, 260, 240);
+            }
+
             async function generatePDF() {
                 document.getElementById("hidden").style.display = "block";
-                document.getElementById("hidden").style.width = "1350px";
+                document.getElementById("hidden").style.width = "1340px";
 
-                var doc = new jsPDF('l', 'mm');
+                doc = new jsPDF('l', 'mm');
                 var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
 
                 for (var i = 0; i < stringHTML.length; i++) {
@@ -89,16 +95,16 @@
                     window.scrollTo(0,0);
 
                     await html2canvas(stringHTML[i], {
+                        scale: 5,
+                        dpi: 144,
                         width: 1400,
                         height: 1400,
-                    }).then(canvas => {
-                        var imgData = canvas.toDataURL('calendar/png');
-                        doc.addImage(imgData, 'PNG', 5, 5, 290, 230);
-                        
-                        if (i + 1 != stringHTML.length) {
-                            doc.addPage();
-                        }
+                        onrendered: renderedPDF
                     });
+
+                    if (i + 1 != stringHTML.length) {
+                        doc.addPage();
+                    }
                     stringHTML[i].style.display = "none";
                 }
 
@@ -140,10 +146,6 @@
                     </div> 
                 </div>
                 `;
-            }
-
-            function daysInMonth(month, year) {
-                return new Date(year, month, 0).getDate();
             }
 
             function medicationDetails() {
@@ -221,7 +223,7 @@
                 while (daysLeft > 0) {
                     var total = "";
                     var day = 1;
-                    var dayMonth = daysInMonth(month, today.getFullYear());
+                    var dayMonth = new Date(today.getFullYear(), month, 0).getDate();
                     var dayOfTheWeek = new Date(today.getFullYear(), month, 1).getDay();
 
                     for (var i = 0; i < 5; i++) {
@@ -230,7 +232,7 @@
                             total += "<td class='calendarTD' class='calendarDay'>";
 
                             if (dayOfTheWeek == 0 && day <= dayMonth) {
-                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:0.5px solid black !important;width:20px !important; height: 20px !important; text-align: center;">${day}</div><br>
+                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:1px solid black !important;width:25px !important; height: 25px !important; text-align: center;">${day}</div><br>
                                     ${doses}`;
                                 day++;
                             } else {
@@ -251,7 +253,7 @@
                 
                 var output = `
                 <form>
-                <p>Your custom generated calendar is made!</p><br><br>
+                <p>Your custom generated calendar is made!</p><br>
                 <a href='javascript:generatePDF()' class="downloadButton">Click to Download CUSTOM CALENDAR</a><br><br><br>
                 <a href='calendarTemplate.png' download='NanodropperCalendar' class="downloadButton">Click to Download BLANK TEMPLATE</a><br><br>
                 

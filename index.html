@@ -55,7 +55,6 @@
         <script>
             var appointment = "";
             var medNum = 0;
-            var doc;
 
             function medicationSubmit() {
                 var num = document.getElementById("#medication").value;
@@ -78,16 +77,13 @@
                 return false;
             }
 
-            function renderedPDF(canvas) {
-                var imgData = canvas.toDataURL('calendar/png');
-                doc.addImage(imgData, 'PNG', 18, 5, 260, 240);
-            }
-
             async function generatePDF() {
-                document.getElementById("hidden").style.display = "block";
-                document.getElementById("hidden").style.width = "1340px";
+                //A4 measures 210 × 297 millimeters or 8.27 × 11.69 inches. In PostScript, its dimensions are rounded off to 595 × 842 points
+                var doc = new jsPDF('l', 'mm', 'a4');
+                const width = 297;
 
-                doc = new jsPDF('l', 'mm');
+                document.getElementById("hidden").style.display = "block";
+                document.getElementById("hidden").style.width = (width + 100) + "mm";
                 var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
 
                 for (var i = 0; i < stringHTML.length; i++) {
@@ -95,11 +91,10 @@
                     window.scrollTo(0,0);
 
                     await html2canvas(stringHTML[i], {
-                        scale: 5,
-                        dpi: 144,
-                        width: 1400,
-                        height: 1400,
-                        onrendered: renderedPDF
+                        width: 1800
+                    }).then((canvas) => {
+                        var imgData = canvas.toDataURL();
+                        doc.addImage(imgData, 'PNG', 12, 10, width * 1.1, width * 0.65);
                     });
 
                     if (i + 1 != stringHTML.length) {

@@ -74,10 +74,16 @@ i {
 .input, select, button {
     border: 0.25px solid gray;
     outline: none;
-    width: 20%;
+    width: 5%;
+    min-width: 100px;
     padding: 3px;
     border-radius: 5px;
     flex: 1;
+}
+
+.input, select {
+    min-width: 150px;
+    max-width: 200px;
 }
 
 input:focus {
@@ -135,6 +141,8 @@ input:focus {
     background-color: var(--lightBlue);
     border-radius: 10px;
     padding: 15px;
+    min-width: 70px;
+    margin-left: 5px;
 }
 
 .calendarH2 {

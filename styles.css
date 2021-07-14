@@ -104,14 +104,16 @@ input:focus {
 .calendarWhite {
     background-color: white;
     padding: 30px 20px;
-    padding-top: 30px;
     width: 100%;
 }
 
 .calendarBorder {
     border: 6px solid var(--blue);
     border-radius: 10px;
-    padding: 15px;
+}
+
+.calendarTop {
+    padding: 10px;
 }
 
 /*CalendarHeader*/
@@ -136,13 +138,23 @@ input:focus {
     margin-bottom: 0;
 }
 
+#calendarDisappear {
+    display: block;
+}
+
+@media screen and (max-width: 700px) {
+    #calendarDisappear {
+        display: none;
+    }
+}
+
 /*calendarTop*/
 .calendarLegend {
     background-color: var(--lightBlue);
     border-radius: 10px;
     padding: 15px;
     min-width: 70px;
-    margin-left: 5px;
+    margin-right: 15px;
 }
 
 .calendarH2 {
@@ -165,6 +177,7 @@ input:focus {
 .calendarPadding {
     background-color: var(--lightBlue);
     padding: 7px;
+    padding-bottom: 0 !important;
 }
 
 .calendar {
@@ -176,6 +189,8 @@ input:focus {
     border-spacing: 0 0.7em;
     border: none;
     table-layout: fixed;
+
+    margin-bottom: 0 !important;
 }
 
 .calendarRow {
@@ -203,7 +218,6 @@ input:focus {
 .calTop {
     text-align: center;
     background-color: var(--lightGray);
-    border-radius: 20px;
 }
 
 .calenLine {

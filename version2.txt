@@ -18,6 +18,11 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" integrity="sha512-YcsIPGdhPK4P/uRW6/sruonlYj+Q7UHWeKfTAkBW+g83NKM+jMJFJ4iAPfSnVp7BKD4dKMHmVSvICUbE/V1sSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.js" integrity="sha512-dBB2PGgYedA6vzize7rsf//Q6iuUuMPvXCDybHtZP3hQXCPCD/YVJXK3QYZ2v0p7YCfVurqr8IdcSuj4CCKnGg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.js" integrity="sha512-dVlVERqW+tvhXtyR9eeRRtvoMlTrvtrXpokQOxGqiavf5+LaNjgrZ3lcPw7lsqUETwWlyg91lQhcLFejtyrnjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.min.js" integrity="sha512-wMs996/3kB35BNfH8sukLIiOBvLlcvKC/qxkOpblGoIvkTRWJo2gYmNyWUt8B9cdDXVpymTZpbo9/hOHwKFroQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
 
     <body>
@@ -81,36 +86,21 @@
             }
 
             async function generatePDF() {
-                //A4 measures 210 × 297 millimeters or 8.27 × 11.69 inches. In PostScript, its dimensions are rounded off to 595 × 842 points
-                var doc = new jsPDF('l', 'mm', 'a4');
-                const width = 297;
-
+                //https://www.pdftron.com/blog/javascript/how-to-generate-pdfs-with-javascript/
                 document.getElementById("hidden").style.display = "block";
-                document.getElementById("hidden").style.width = (width + 100) + "mm";
-                var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
+                document.getElementById("hidden").style.width = "1000px";
 
-                for (var i = 0; i < stringHTML.length; i++) {
-                    stringHTML[i].style.display = "block";
-                    window.scrollTo(0,0);
+                const opt = {
+                    margin: 2,
+                    filename: 'NanodropperCalendar.pdf',
+                    image: {type: 'jpeg', quality: 1},
+                    html2canvas:  { scale: 2 },
+                    jsPDF: {format: 'letter', orientation: 'landscape'}
+                };
+                await html2pdf().set(opt).from(document.getElementById("hidden")).save();
 
-                    await html2canvas(stringHTML[i], {
-                        useCORS: true, 
-                        width: 1800
-                    }).then((canvas) => {
-                        var imgData = canvas.toDataURL();
-                        doc.addImage(imgData, 'PNG', 12, 10, width * 1.1, width * 0.65);
-                    });
-
-                    if (i + 1 != stringHTML.length) {
-                        doc.addPage();
-                    }
-                    stringHTML[i].style.display = "none";
-                }
-
-                doc.save('NanodropperCalendar.pdf');
                 document.getElementById("hidden").style.display = "none";
             }
-
 
             function generateCalendar(month, str, calDays, total) {
                 return `
@@ -119,7 +109,7 @@
                         <div class="calendarHeader">
                             <div>
                                 <h2 id="calendarTitle" style="margin-bottom: 0;">Nanodropper Calendar</h2>
-                                <div style="width: 50px; height: 50px; float: left; content: url('NanodropperLogo.png');"></div>
+                                <img src="NanodropperLogo.png" width="50" height="50"/>
                             </div>
                         </div>
                             
@@ -177,7 +167,7 @@
 
                 //The dates at the top of the custom generated calendar
                 var calDays = "<tr class='calTop calendarRow'>";
-                var arr = ["SUN", "MON", "TUES", "WEDNES", "THURS", "FRI", "SATUR"];
+                var arr = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
                 for (var i = 0; i < arr.length; i++) {
                     calDays += `<th class='calendarTH'>${arr[i]}</th>`;
@@ -206,7 +196,7 @@
                 }
 
                 //Create the things necessary for calendar
-                var doses = "<table style='width: 100%; margin-top: 0; margin-bottom: 0 !important;'>";
+                var doses = "<table style='width: 100%; margin-top: 0;'>";
                 for (var j = 0; j < 3; j++) {
                     doses += "<tr><td>" + times[j][1] + "</td><td>" + times[j][2] + "</td><td>" + times[j][3] + "</td><td>" + times[j][4] + "</td><td>" + times[j][5] + "</td></tr>";
                 }
@@ -221,8 +211,7 @@
                 while (daysLeft > 0) {
                     var total = "";
                     var day = 1;
-                    
-                    var dayMonth = new Date(today.getFullYear(), month + 1, 0).getDate();
+                    var dayMonth = new Date(today.getFullYear(), month, 0).getDate();
                     var dayOfTheWeek = new Date(today.getFullYear(), month, 1).getDay();
 
                     for (var i = 0; i < 5; i++) {
@@ -257,11 +246,9 @@
                 <a href='calendarTemplate.png' download='NanodropperCalendar' class="downloadButton">Click to Download BLANK TEMPLATE</a><br><br>
                 
                 <br>
-                <div id="calendarDisappear">
-                    <p>Here is what the custom calendar looks like:</p>
-                    <div class='calendarToDownload' id="calendarToDownload">
-                        ${finalCalendar}
-                    </div>
+                <p>Here is what the custom calendar looks like:</p>
+                <div class='calendarToDownload' id="calendarToDownload">
+                    ${finalCalendar}
                 </div>
                 </form>
                 `;

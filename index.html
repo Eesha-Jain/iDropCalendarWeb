@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
         <script src="https://kit.fontawesome.com/6981eea73f.js" crossorigin="anonymous"></script>
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
@@ -81,6 +82,8 @@
             }
 
             async function generatePDF() {
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please don't move your screen";
+
                 //A4 measures 210 × 297 millimeters or 8.27 × 11.69 inches. In PostScript, its dimensions are rounded off to 595 × 842 points
                 var doc = new jsPDF('l', 'mm', 'a4');
                 const width = 297;
@@ -94,6 +97,7 @@
                     window.scrollTo(0,0);
 
                     await html2canvas(stringHTML[i], {
+                        allowTaint: true,
                         useCORS: true,
                         width: 1800
                     }).then((canvas) => {
@@ -108,6 +112,7 @@
 
                 doc.save('NanodropperCalendar.pdf');
                 document.getElementById("hidden").style.display = "none";
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Click to Download CUSTOM CALENDAR";
             }
 
 
@@ -118,7 +123,7 @@
                         <div class="calendarHeader">
                             <div>
                                 <h2 id="calendarTitle" style="margin-bottom: 0;">Nanodropper Calendar</h2>
-                                <img src="NanodropperLogo.png" width="50px" height="50px">
+                                <img crossorigin="anonymous" src="NanodropperLogo.png" width="50px" height="50px">
                             </div>
                         </div>
                             
@@ -127,7 +132,7 @@
                                 <div class="calendarGenericInfo">
                                     <p class="calendarH2">MONTH: ${month}</p>
                                     <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
-                                    <p>INSTRUCTIONS FOR USE: Take <i class="fas fa-cloud-sun"></i> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the box for that drop. Complete this calendar every day until your next appointment.</p>
+                                    <p style="font-size: 18px;">INSTRUCTIONS FOR USE: Take <span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F;"></span> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the shape. Complete this calendar every day until your next appointment.</p>
                                 </div>
                                 <div class="calendarLegend">${str}</div>
                             </div>
@@ -185,7 +190,7 @@
                 calDays += "</tr>";
                 
                 //Creating the morning row in a calendar day
-                var times = [['morning', '<i class="fas fa-cloud-sun"></i>', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
+                var times = [['morning', '<span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F;"></span>', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
                 var i = 2;
 
                 for (var key in grid) {
@@ -252,7 +257,7 @@
                 var output = `
                 <form>
                 <p>Your custom generated calendar is made!</p><br>
-                <a href='javascript:generatePDF()' class="downloadButton">Click to Download CUSTOM CALENDAR</a><br><br><br>
+                <a href='javascript:generatePDF()' class="downloadButton" id="customCalendarDownloadButton">Click to Download CUSTOM CALENDAR</a><br><br><br>
                 <a href='calendarTemplate.png' download='NanodropperCalendar' class="downloadButton">Click to Download BLANK TEMPLATE</a><br><br>
                 
                 <br>

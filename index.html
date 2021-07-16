@@ -94,11 +94,10 @@
                     window.scrollTo(0,0);
 
                     await html2canvas(stringHTML[i], {
-                        useCORS: true, 
+                        useCORS: true,
                         width: 1800
                     }).then((canvas) => {
-                        var imgData = canvas.toDataURL();
-                        doc.addImage(imgData, 'PNG', 12, 10, width * 1.1, width * 0.65);
+                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 12, 10, width * 1.1, width * 0.65);
                     });
 
                     if (i + 1 != stringHTML.length) {
@@ -119,7 +118,7 @@
                         <div class="calendarHeader">
                             <div>
                                 <h2 id="calendarTitle" style="margin-bottom: 0;">Nanodropper Calendar</h2>
-                                <div style="width: 50px; height: 50px; float: left; content: url('NanodropperLogo.png');"></div>
+                                <img src="NanodropperLogo.png" width="50px" height="50px">
                             </div>
                         </div>
                             
@@ -128,7 +127,7 @@
                                 <div class="calendarGenericInfo">
                                     <p class="calendarH2">MONTH: ${month}</p>
                                     <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
-                                    <p>INSTRUCTIONS FOR USE: Take <i class="fas fa-cloud-sun"></i> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the box for that drop.</p>
+                                    <p>INSTRUCTIONS FOR USE: Take <i class="fas fa-cloud-sun"></i> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the box for that drop. Complete this calendar every day until your next appointment.</p>
                                 </div>
                                 <div class="calendarLegend">${str}</div>
                             </div>

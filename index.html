@@ -15,7 +15,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
         <script src="https://kit.fontawesome.com/6981eea73f.js" crossorigin="anonymous"></script>
-        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
@@ -52,10 +51,10 @@
                 <div id="calendarOutput" class="form">
                 </div>
 
-                <div id="hidden"></div>
+                <div id="hidden" style="display: none;"></div>
             </div>
         </div>
-    
+
         <script>
             var appointment = "";
             var medNum = 0;
@@ -81,41 +80,6 @@
                 return false;
             }
 
-            async function generatePDF() {
-                document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please don't move your screen";
-
-                //A4 measures 210 × 297 millimeters or 8.27 × 11.69 inches. In PostScript, its dimensions are rounded off to 595 × 842 points
-                var doc = new jsPDF('l', 'mm', 'a4');
-                const width = 297;
-
-                document.getElementById("hidden").style.display = "block";
-                document.getElementById("hidden").style.width = (width + 100) + "mm";
-                var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
-
-                for (var i = 0; i < stringHTML.length; i++) {
-                    stringHTML[i].style.display = "block";
-                    window.scrollTo(0,0);
-
-                    await html2canvas(stringHTML[i], {
-                        allowTaint: true,
-                        useCORS: true,
-                        width: 1800
-                    }).then((canvas) => {
-                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 12, 10, width * 1.1, width * 0.65);
-                    });
-
-                    if (i + 1 != stringHTML.length) {
-                        doc.addPage();
-                    }
-                    stringHTML[i].style.display = "none";
-                }
-
-                doc.save('NanodropperCalendar.pdf');
-                document.getElementById("hidden").style.display = "none";
-                document.getElementById("customCalendarDownloadButton").innerHTML = "Click to Download CUSTOM CALENDAR";
-            }
-
-
             function generateCalendar(month, str, calDays, total) {
                 return `
                 <div class="calendarBox">
@@ -132,7 +96,7 @@
                                 <div class="calendarGenericInfo">
                                     <p class="calendarH2">MONTH: ${month}</p>
                                     <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
-                                    <p style="font-size: 18px;">INSTRUCTIONS FOR USE: Take <span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F;"></span> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the shape. Complete this calendar every day until your next appointment.</p>
+                                    <p style="font-size: 18px !important;">INSTRUCTIONS FOR USE: Take <img src="sunrise.svg" width="15" height="15"> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the shape. Complete this calendar every day until your next appointment.</p>
                                 </div>
                                 <div class="calendarLegend">${str}</div>
                             </div>
@@ -176,7 +140,7 @@
                     grid[i] = self;
                     var sum = Number(grid[i]['morning']) + Number(grid[i]['afternoon']) + Number(grid[i]['night']);
                     
-                   str += '<div style="clear:both;"><p style="float: left;">Drop ' + i + ' - </p><div class="shape" id="' + shapes[i - 1][0] + '" style="' + shapes[i - 1][1] + '; float: left;"></div><p style="float: left;">: ' + grid[i]['name'] + '&emsp;' + sum + 'x / day &emsp;' + grid[i]['drop'] + ' eyes</p></div><br>';
+                    str += '<div style="clear:both;"><p style="float: left;">Drop ' + i + ' - </p><div class="shape" id="' + shapes[i - 1][0] + '" style="' + shapes[i - 1][1] + '; float: left;"></div><p style="float: left;">: ' + grid[i]['name'] + '&emsp;' + sum + 'x / day &emsp;' + grid[i]['drop'] + ' eyes</p></div><br>';
                 }
 
                 //The dates at the top of the custom generated calendar
@@ -190,7 +154,9 @@
                 calDays += "</tr>";
                 
                 //Creating the morning row in a calendar day
-                var times = [['morning', '<span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F;"></span>', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
+                //<span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F; position: relative;"></span>
+
+                var times = [['morning', '<img src="sunrise.svg" width="15" height="15">', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
                 var i = 2;
 
                 for (var key in grid) {
@@ -252,6 +218,10 @@
                     daysLeft -= dayMonth;
                     day = 1;
                     month++;
+
+                    if (month > 11) {
+                        month = 0;
+                    }
                 }
                 
                 var output = `
@@ -273,9 +243,36 @@
                 document.getElementById("calendarOutput").innerHTML = output;
                 document.getElementById("secondForm").style.display = "none";
                 document.getElementById("hidden").innerHTML = finalCalendar;
-                document.getElementById("hidden").style.display = "none";
+                localStorage.setItem("calendarHTMLHidden", finalCalendar);
 
                 return false;
+            }
+
+            async function generatePDF() {
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please don't move your screen";
+                document.getElementById("hidden").style.display="block";
+
+                var doc = new jsPDF('l', 'mm', 'a4');
+                const width = 297;
+                var stringHTML = document.getElementById("hidden").getElementsByClassName("calendarBox");
+
+                for (var i = 0; i < stringHTML.length; i++) {
+                    await html2canvas(stringHTML[i], {
+                        allowTaint: true,
+                        useCORS: true,
+                        width: 1800
+                    }).then((canvas) => {
+                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 17, 10, width * 1.25, width * 0.65);
+                    });
+
+                    if (i + 1 != stringHTML.length) {
+                        doc.addPage();
+                    }
+                }
+
+                doc.save('NanodropperCalendar.pdf');
+                document.getElementById("hidden").style.display="none";
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Click to Download CUSTOM CALENDAR";
             }
         </script>
     </body>

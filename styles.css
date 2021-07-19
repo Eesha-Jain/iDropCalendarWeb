@@ -99,6 +99,18 @@ input:focus {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
 }
+input[type=submit] {
+    padding: 10px;
+    background-color:var(--blue);
+    color: white;
+    border-radius: 70px;
+    width: 200px;
+    min-width: 50px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    border: none;
+    outline: none;
+}
 
 /*Edges*/
 .calendarWhite {
@@ -146,6 +158,10 @@ input:focus {
     #calendarDisappear {
         display: none;
     }
+    
+    input[type=submit] {
+        width: 100%;
+    }
 }
 
 /*calendarTop*/
@@ -156,7 +172,7 @@ input:focus {
     min-width: 300px;
     width: 450px;
     margin-right: 15px;
-    font-size: 18px;
+    font-size: 18px !important;
 }
 
 .calendarH2 {
@@ -167,7 +183,7 @@ input:focus {
 .shape {
     margin-left: 7px;
     margin-right: 7px;
-    margin-top: 15px;
+    margin-top: 18px;
 }
 
 .calShape {

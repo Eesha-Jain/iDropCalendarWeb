@@ -236,10 +236,9 @@
                 </div>
 
 
-                <iframe id="theFrame" src="calendarDownload.html" />
+                <iframe id="theFrame" src="calendarDownload.html" style="width: 100%; visibility: hidden;" />
                 </form>
                 `;
-                //src="about:blank" ||| width: 397mm;visibility:hidden;
 
                 document.getElementById("calendarOutput").innerHTML = output;
                 document.getElementById("secondForm").style.display = "none";
@@ -253,28 +252,15 @@
                 var doc = new jsPDF('l', 'mm', 'a4');
                 const width = 297;
 
-                /*let newdoc = document.implementation.createHTMLDocument("New Document");
-                let div = newdoc.createElement("div");
-                div.style.width = "397mm";
-                div.innerHTML = document.getElementById("calendarOutput").innerHTML;
-                newdoc.body.appendChild(div);
-
-                //WORK WITH HAVING THE DOCUMENT.CREATEHTMLDOCUMENT AND THE IFRAME
-                //https://contest-server.cs.uchicago.edu/ref/JavaScript/developer.mozilla.org/en-US/docs/Web/API/DOMImplementation/createHTMLDocument.html
-
-                let destDocument = document.getElementById("theFrame").contentDocument;
-                let newNode = destDocument.importNode(newdoc.documentElement, true);
-                destDocument.replaceChild(newNode, destDocument.documentElement);*/
-                
                 var stringHTML = document.getElementById("theFrame").contentDocument.getElementsByClassName("calendarBox");
                 
                 for (var i = 0; i < stringHTML.length; i++) {
                     await html2canvas(stringHTML[i], {
                         allowTaint: true,
                         useCORS: true,
-                        width: 1800
+                        width: 1780
                     }).then((canvas) => {
-                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 5, 5, width * 1.14, width * 0.68);
+                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 5, 5, width * 1.13, width * 0.68);
                     });
                     
                     if (i + 1 != stringHTML.length) {

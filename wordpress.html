@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/6981eea73f.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
+        
+        <style>
+            .customCode {
+                font-family: "Open Sans";
+                font-weight: 300;
+                width: 100%;
+            }
+
+            .customCode h1 {
+                font-family: "Open Sans";
+                font-weight: 600;
+                color: white;
+            }
+            
+            /*Columns*/
+            .customCode .row {
+                display: grid;
+                width: 100%;
+                grid-template-columns: auto auto;
+            }
+
+            .customCode .formContainer {
+                width: 100%;
+                min-height: 100%;
+                display: flex;
+            }
+
+            .customCode i {
+                color: #2A3B9F;
+            }
+
+            .customCode .container {
+                padding: 0 !important;
+                width: 100%;
+                min-height: 100%;
+                background-color: rgb(243, 243, 243);
+                border-radius: 50px;
+                margin: auto;
+            }
+
+            .customCode .title {
+                margin: 0 !important;
+                padding: 20px !important;
+                border-radius: 50px 50px 0 0;
+                text-align: center;
+                background-color: #2A3B9F;
+            }
+
+            .customCode .form {
+                padding: 20px;
+                width: 90%;
+            }
+
+            .customCode .question {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 5px;
+            }
+
+            .customCode .label {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            .customCode .input, .customCode select, .customCode button {
+                border: 0.25px solid gray;
+                outline: none;
+                width: 5%;
+                min-width: 100px;
+                padding: 3px;
+                border-radius: 5px;
+                flex: 1;
+            }
+
+            .customCode .input, .customCode select {
+                min-width: 150px;
+                max-width: 200px;
+            }
+
+            .customCode input:focus {
+                outline: none;
+            }
+
+            .customCode .downloadButton {
+                background-color: #2A3B9F;
+                border-radius: 10px;
+                padding: 15px;
+                display: inline-block;
+            }
+
+            .customCode .downloadButton a {
+                color: white;
+                text-decoration: none;
+                font-family: 'Open Sans', sans-serif;
+                font-size: 16px;
+            }
+
+            .customCode input[type=submit] {
+                padding: 10px;
+                background-color: #2A3B9F;
+                color: white;
+                border-radius: 70px;
+                width: 200px;
+                min-width: 50px;
+                font-family: 'Open Sans', sans-serif;
+                font-size: 11px;
+                border: none;
+                outline: none;
+            }
+
+            /*Edges*/
+            .customCode .calendarWhite {
+                background-color: white;
+                padding: 30px 20px;
+                width: 100%;
+            }
+
+            .customCode .calendarBorder {
+                border: 6px solid #2A3B9F;
+                border-radius: 10px;
+            }
+
+            .customCode .calendarTop {
+                padding: 10px;
+            }
+
+            /*CalendarHeader*/
+            .customCode .calendarHeader {
+                padding: 0px 10px;
+                background-color: #ffffff;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 300;
+                position: relative; 
+                top: -25px;
+                margin-left: 20px;
+                float: left;
+            }
+
+            .customCode #calendarTitle {
+                font-size: 42px;
+                color: #2A3B9F;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 800;
+                float: left;
+                margin-top: 0px;
+                margin-bottom: 0;
+            }
+
+            .customCode #calendarDisappear {
+                display: block;
+            }
+
+            @media screen and (max-width: 700px) {
+                .customCode #calendarDisappear {
+                    display: none;
+                }
+                
+                .customCode input[type=submit] {
+                    width: 100%;
+                }
+            }
+
+            /*calendarTop*/
+            .customCode .calendarLegend {
+                background-color: #EDF0F7;
+                border-radius: 10px;
+                padding: 15px;
+                margin-right: 15px;
+                font-size: 18px !important;
+            }
+
+            .customCode .calendarH2 {
+                margin: 1;
+                font-size: 30px;
+            }
+
+            .customCode .shape {
+                margin-left: 7px;
+                margin-right: 7px;
+                margin-top: 6px;
+                padding: 0;
+            }
+
+            .customCode .calShape {
+                margin-top: 3px;
+                margin-left: 0;
+            }
+
+            /*Calendar*/
+            .customCode .calendarPadding {
+                background-color: #EDF0F7;
+                padding: 7px;
+                padding-bottom: 0 !important;
+            }
+
+            .customCode .calendar {
+                border-radius: 5px;
+                width: 100%;
+                font-family: 'Open Sans', sans-serif;
+                font-weight: 300;
+                border-collapse: separate;
+                border-spacing: 0 0.7em;
+                border: none;
+                table-layout: fixed;
+
+                margin-bottom: 0 !important;
+            }
+
+            .customCode .calendarRow {
+                background-color: #e1e1e1;
+            }
+
+            .customCode .calendarTD,
+            .customCode .calendarTH {
+                padding: 10px;
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                width: 14%;
+            }
+
+            .customCode .calendarTD:first-child,
+            .customCode .calendarTH:first-child {
+                border-left: none;
+            }
+
+            .customCode .calendarTD:last-child,
+            .customCode .calendarTH:last-child {
+                border-right: none;
+            }
+
+            .customCode .calTop {
+                text-align: center;
+                background-color: #d2d2d2;
+            }
+
+            .customCode .calenLine {
+                position: relative; 
+                top: -12px;
+                height: 8px;
+                border-radius: 5px;
+                color: #e1e1e1;
+                z-index: 2;
+            }
+
+            .customCode .dosingTable,
+            .customCode .dosingTable tbody,
+            .customCode .dosingTable th,
+            .customCode .dosingTable td, 
+            .customCode .dosingTable tr{
+                border: none !important;
+                margin: 0; 
+                padding: 0;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="customCode">
+            <div class="formContainer">
+                <div class="container">
+                    <div class="title">
+                        <h1>Nanodropper Calendar</h1>
+                    </div>
+    
+                    <form id="firstForm" class="form" onsubmit="return medicationSubmit()" method="POST">
+                        <div class="question">
+                            <label class='label' for="#medication">How many different drops do you take?</label>
+                            <input class='input' name="#medication" type="number" min="1" max="4" id="#medication" required>
+                        </div>
+    
+                        <br>
+    
+                        <div class="question">
+                            <label class='label' for="appoint">When's your next appointment?</label>
+                            <input class='input' name="appoint" type="date" id="appoint" required>
+                        </div>
+        
+                        <br><br>
+        
+                        <input class='input' type="submit" value="Next">
+                    </form>
+        
+                    <form id="secondForm" class="form" onsubmit="return medicationDetails();" method="POST">
+                    </form>
+    
+                    <div id="calendarOutput" class="form">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var appointment = "";
+            var medNum = 0;
+
+            function medicationSubmit() {
+                var num = document.getElementById("#medication").value;
+                appointment = document.getElementById("appoint").value;
+                medNum = num;
+
+                document.getElementById("firstForm").style.display = "none";
+                var string = "";
+
+                for (var i = 1; i <= num; i++) {
+                    string += "<div class='question'><label class='label' for='medname" + i + "'>Name of drop " + i + "</label><input class='input' name='medname" + i + "' id='medname" + i + "' required><br></div>";
+                    string += '<br><input type="checkbox" name="medmor' + i + '" id="medmor' + i + '"><label name="medmor' + i + '">I take drop ' + i + ' in the morning</label>';
+                    string += '<br><input type="checkbox" name="medaft' + i + '" id="medaft' + i + '"><label  name="medaft' + i + '">I take drop ' + i + ' in the afternoon</label>';
+                    string += '<br><input type="checkbox" name="mednig' + i + '" id="mednig' + i + '"><label name="mednig' + i + '">I take drop ' + i + ' in the night</label><br><br>';
+                    string += "<div class='question'><label class='label' for='meddrop" + i + "' required>Which eyes do you put drop " + i + "?</label><select name = 'meddrop" + i + "' id = 'meddrop" + i + "'><option value = 'Both'>Both</option><option value = 'Left'>Left</option><option value = 'Right'>Right</option></select></div><br><br>";
+                    string += "<br>";
+                }
+
+                document.getElementById("secondForm").innerHTML = string + "<input type='submit' value='Submit'>";
+                return false;
+            }
+
+            function generateCalendar(month, str, calDays, total) {
+                return `
+                <div class="calendarBox">
+                    <div class="calendarWhite">
+                        <div class="calendarHeader">
+                            <div>
+                                <h2 id="calendarTitle" style="margin-bottom: 0;">Nanodropper Calendar</h2>
+                                <img crossorigin="anonymous" src="data:image/png;base64,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" width="50px" height="50px">
+                            </div>
+                        </div>
+                            
+                        <div class="calendarBorder">
+                            <div class="calendarTop row">
+                                <div class="calendarGenericInfo">
+                                    <p class="calendarH2">MONTH: ${month}</p>
+                                    <p class="calendarH2">NEXT APPOINTMENT: ${appointment}</p>
+                                    <p style="font-size: 18px !important;">INSTRUCTIONS FOR USE: Take <i class="fas fa-coffee"></i> drops in the morning, <i class="fas fa-sun"></i> in the afternoon, and <i class="fas fa-moon"></i> in the night. Once completed, shade in the shape. Complete this calendar every day until your next appointment.</p>
+                                </div>
+                                <div class="calendarLegend">${str}</div>
+                            </div>
+
+                            <br>
+                            <div class="calendarPadding">
+                                <table class="calendar">
+                                    ${calDays}
+                                    ${total}
+                                </table>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+                `;
+            }
+
+            function medicationDetails() {
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+
+                //Diamond & triangle from https://idevie.com/tutorials/make-shapes-with-css-how-to-create-different-shapes-in-css
+                var shapes = [['square', 'width: 15px; height: 15px;border:2px solid #293caa;'],['circle', 'width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4;'],['diamond', 'width: 13px; height: 13px; -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg);border:2px solid #7f7dde;'], ['triangle', 'width: 15px; height: 15px; -webkit-transform: skew(20deg); -moz-transform: skew(20deg); -o-transform: skew(20deg); border: 2px solid #5d8abd;']];
+
+                var grid = {};
+                var str = "";
+
+                //Legend & generating the grid for the calendar making
+                for (var i = 1; i <= medNum; i++) {
+                    var num1 = document.getElementById('medmor' + i).checked ? 1 : 0;
+                    var num2 = document.getElementById('medaft' + i).checked ? 1 : 0;
+                    var num3 = document.getElementById('mednig' + i).checked ? 1 : 0;
+
+                    var self = {
+                        name: document.getElementById('medname' + i).value,
+                        morning: num1,
+                        afternoon: num2,
+                        night: num3,
+                        drop: document.getElementById('meddrop' + i).value,
+                    }
+
+                    grid[i] = self;
+                    var sum = Number(grid[i]['morning']) + Number(grid[i]['afternoon']) + Number(grid[i]['night']);
+                    
+                    str += '<div style="clear:both;"><p style="float: left;">Drop ' + i + ' - </p><div class="shape" id="' + shapes[i - 1][0] + '" style="' + shapes[i - 1][1] + '; float: left;"></div><p style="float: left;">: ' + grid[i]['name'] + '&emsp;' + sum + 'x / day &emsp;' + grid[i]['drop'] + ' eyes</p></div><br>';
+                }
+
+                //The dates at the top of the custom generated calendar
+                var calDays = "<tr class='calTop calendarRow'>";
+                var arr = ["SUN", "MON", "TUES", "WEDNES", "THURS", "FRI", "SATUR"];
+
+                for (var i = 0; i < arr.length; i++) {
+                    calDays += `<th class='calendarTH'>${arr[i]}</th>`;
+                }
+
+                calDays += "</tr>";
+                
+                //Creating the morning row in a calendar day
+                //<span class="iconify" data-icon="wi-sunrise" data-inline="false" style="color: #2A3B9F; position: relative;"></span>
+
+                var times = [['morning', '<i class="fas fa-coffee"></i>', '', '', '', ''],['afternoon', '<i class="fas fa-sun"></i>', '', '', '', ''], ['night', '<i class="fas fa-moon"></i>', '', '', '', '']];
+                var i = 2;
+
+                for (var key in grid) {
+                    if (grid[key]['morning'] == 1) {
+                        times[0][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                    }
+
+                    if (grid[key]['afternoon'] == 1) {
+                        times[1][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                    }
+
+                    if (grid[key]['night'] == 1) {
+                        times[2][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                    }
+
+                    i++;
+                }
+
+                //Create the things necessary for calendar
+                var doses = "<table class='dosingTable' style='width: 100%; margin-top: 0; margin-bottom: 0 !important;'>";
+                for (var j = 0; j < 3; j++) {
+                    doses += "<tr><td>" + times[j][1] + "</td><td>" + times[j][2] + "</td><td>" + times[j][3] + "</td><td>" + times[j][4] + "</td><td>" + times[j][5] + "</td></tr>";
+                }
+                doses += "</table>";
+
+                //Generating the calendar based on the days
+                var today = new Date();
+                var daysLeft = Math.round((new Date(appointment).getTime() - today.getTime()) / (1000 * 3600 * 24)) + 2;
+                var finalCalendar = "";
+                var month = today.getMonth();
+                daysLeft += today.getDate();
+
+                var year = today.getFullYear();
+
+                while (daysLeft > 0) {
+                    var total = "";
+                    var day = 1;
+                    
+                    var dayMonth = new Date(year, month + 1, 0).getDate();
+                    var dayOfTheWeek = new Date(year, month, 1).getDay();
+
+                    for (var i = 0; i < 5; i++) {
+                        total += "<tr class='calendarRow'>";
+                        for (var j = 0; j < 7; j++) {
+                            total += "<td class='calendarTD' class='calendarDay'>";
+
+                            if (dayOfTheWeek == 0 && day <= dayMonth) {
+                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div><br>
+                                    ${doses}`;
+                                day++;
+                            } else {
+                                dayOfTheWeek--;
+                            }
+
+                            total += "</td>"
+                        }
+                        total += "</tr>";
+                    }
+
+                    if (dayMonth - day >= 0) {
+                        total += "<tr class='calendarRow'>";
+                        for (var j = 0; j < 7; j++) {
+                            total += "<td class='calendarTD' class='calendarDay'>";
+
+                            if (dayOfTheWeek == 0 && day <= dayMonth) {
+                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div><br>
+                                    ${doses}`;
+                                day++;
+                            } else {
+                                dayOfTheWeek--;
+                            }
+
+                            total += "</td>"
+                        }
+                        total += "</tr>";
+                    }
+
+                    //Final output
+                    finalCalendar += generateCalendar(months[month], str, calDays, total) + "<br class='breaker'>";
+                    daysLeft -= dayMonth;
+                    day = 1;
+                    month++;
+
+                    if (month > 11) {
+                        month = 0;
+                        year++;
+                    }
+                }
+
+                //var iframe = document.createElement("iframe");
+                //iframe.contentWindow.document.body.innerHTML = finalCalendar;
+                //iframe.contentWindow.document.body.innerHTML.style.width = "397mm";
+                
+                var output = `
+                <form>
+                <p>Your custom generated calendar is made!</p><br>
+                <div class="downloadButton"><a href='javascript:generatePDF()' id="customCalendarDownloadButton">Download CUSTOM CALENDAR</a></div><br>
+                
+                <br>
+                <div id="calendarDisappear">
+                    <p>Here is what the custom calendar looks like:</p>
+                    <div class='calendarToDownload' id="calendarToDownload">
+                        ${finalCalendar}
+                    </div>
+                </div>
+
+                <iframe id="theFrame" style="width: 10px; height: 10px; visibility: hidden;" />
+
+                </form>
+                `;
+
+                document.getElementById("calendarOutput").innerHTML = output;
+                document.getElementById("secondForm").style.display = "none";
+
+                //Changing iframe
+                var full = `<html><head><link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet"><style> .customCode { font-family: "Open Sans"; font-weight: 300; width: 100%; } .customCode h1 { font-family: "Open Sans"; font-weight: 600; color: white; } /*Columns*/ .customCode .row { display: grid; width: 100%; grid-template-columns: auto auto; } .customCode .formContainer { width: 100%; min-height: 100%; display: flex; } .customCode i { color: #2A3B9F; } .customCode .container { padding: 0 !important; width: 100%; min-height: 100%; background-color: rgb(243, 243, 243); border-radius: 50px; margin: auto; } .customCode .title { margin: 0 !important; padding: 20px !important; border-radius: 50px 50px 0 0; text-align: center; background-color: #2A3B9F; } .customCode .form { padding: 20px; width: 90%; } .customCode .question { display: flex; flex-direction: row; margin-bottom: 5px; } .customCode .label { font-size: 18px; margin-right: 10px; } .customCode .input, .customCode select, .customCode button { border: 0.25px solid gray; outline: none; width: 5%; min-width: 100px; padding: 3px; border-radius: 5px; flex: 1; } .customCode .input, .customCode select { min-width: 150px; max-width: 200px; } .customCode input:focus { outline: none; } .customCode .downloadButton { padding: 15px; background-color: #2A3B9F; color: white; border-radius: 10px; text-decoration: none; font-family: 'Open Sans', sans-serif; font-size: 16px; } .customCode input[type=submit] { padding: 10px; background-color: #2A3B9F; color: white; border-radius: 70px; width: 200px; min-width: 50px; font-family: 'Open Sans', sans-serif; font-size: 11px; border: none; outline: none; } /*Edges*/ .customCode .calendarWhite { background-color: white; padding: 30px 20px; width: 100%; } .customCode .calendarBorder { border: 6px solid #2A3B9F; border-radius: 10px; } .customCode .calendarTop { padding: 10px; } .customCode .calendarBox { width: 397mm; } /*CalendarHeader*/ .customCode .calendarHeader { padding: 0px 10px; background-color: #ffffff; font-family: 'Open Sans', sans-serif; font-weight: 300; position: relative; top: -25px; margin-left: 20px; float: left; } .customCode #calendarTitle { font-size: 42px; color: #2A3B9F; font-family: 'Open Sans', sans-serif; font-weight: 800; float: left; margin-top: 0px; margin-bottom: 0; } .customCode #calendarDisappear { display: block; } @media screen and (max-width: 700px) { .customCode #calendarDisappear { display: none; } .customCode input[type=submit] { width: 100%; } } /*calendarTop*/ .customCode .calendarLegend { background-color: #EDF0F7; border-radius: 10px; padding: 15px; margin-right: 15px; font-size: 18px !important; } .customCode .calendarH2 { margin: 1; font-size: 30px; } .customCode .shape { margin-left: 7px; margin-right: 7px; margin-top: 20px; padding: 0; } .customCode .calShape { margin-top: 3px; margin-left: 0; } /*Calendar*/ .customCode .calendarPadding { background-color: #EDF0F7; padding: 7px; padding-bottom: 0 !important; } .customCode .calendar { border-radius: 5px; width: 100%; font-family: 'Open Sans', sans-serif; font-weight: 300; border-collapse: separate; border-spacing: 0 0.7em; border: none; table-layout: fixed; margin-bottom: 0 !important; } .customCode .calendarRow { background-color: #e1e1e1; } .customCode .calendarTD, .customCode .calendarTH { padding: 10px; border-left: 1px solid black; border-right: 1px solid black; width: 14%; } .customCode .calendarTD:first-child, .customCode .calendarTH:first-child { border-left: none; } .customCode .calendarTD:last-child, .customCode .calendarTH:last-child { border-right: none; } .customCode .calTop { text-align: center; background-color: #d2d2d2; } .customCode .calenLine { position: relative; top: -12px; height: 8px; border-radius: 5px; color: #e1e1e1; z-index: 2; } .customCode .dosingTable, .customCode .dosingTable tbody, .customCode .dosingTable th, .customCode .dosingTable td, .customCode .dosingTable tr{ border: none !important; margin: 0; padding: 0; } </style> </head> <body> <div class="customCode">${finalCalendar}</div></body></html>`;                
+
+                var iframe = document.getElementById("theFrame");
+                iframe.contentWindow.document.write(full);
+                var script = iframe.contentWindow.document.createElement("script");
+                script.src = "https://kit.fontawesome.com/6981eea73f.js";
+                script.crossOrigin = "anonymous";
+                iframe.contentWindow.document.body.appendChild(script);
+
+                return false;
+            }
+
+            async function generatePDF() {
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please wait";
+                var doc = new jsPDF('l', 'mm', 'a4');
+                const width = 297;
+
+                var stringHTML = document.getElementById("theFrame").contentDocument.getElementsByClassName("calendarBox");
+                
+                for (var i = 0; i < stringHTML.length; i++) {
+                    await html2canvas(stringHTML[i], {
+                        allowTaint: true,
+                        useCORS: true,
+                        width: 1780
+                    }).then((canvas) => {
+                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 5, 5, width * 1.13, width * 0.68);
+                    });
+                    
+                    if (i + 1 != stringHTML.length) {
+                        doc.addPage();
+                    }
+                }
+
+                doc.save('NanodropperCalendar.pdf');
+                document.getElementById("customCalendarDownloadButton").innerHTML = "Download CUSTOM CALENDAR";
+            }
+        </script>
+    </body>
+</html>

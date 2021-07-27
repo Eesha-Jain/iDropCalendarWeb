@@ -1,13 +1,3 @@
-:root {
-    --partGray: #e1e1e1;
-    --black: #000000;
-    --white: #ffffff;
-    --lightGray: #d2d2d2;
-    --darkGray: #949494;
-    --blue: #2A3B9F;
-    --lightBlue: #EDF0F7;
-}
-
 html, body {
     margin: 0;
     padding: 0;
@@ -34,7 +24,7 @@ h1 {
 }
 
 i {
-    color: var(--blue);
+    color: #2A3B9F;
 }
 
 .container {
@@ -49,7 +39,7 @@ i {
 .title {
     border-radius: 50px 50px 0 0;
     text-align: center;
-    background-color: var(--blue);
+    background-color: #2A3B9F;
     color: white;
     padding: 10px;
     margin: 0;
@@ -92,7 +82,7 @@ input:focus {
 
 .downloadButton {
     padding: 15px;
-    background-color:var(--blue);
+    background-color: #2A3B9F;
     color: white;
     border-radius: 10px;
     text-decoration: none;
@@ -101,7 +91,7 @@ input:focus {
 }
 input[type=submit] {
     padding: 10px;
-    background-color:var(--blue);
+    background-color: #2A3B9F;
     color: white;
     border-radius: 70px;
     width: 200px;
@@ -120,7 +110,7 @@ input[type=submit] {
 }
 
 .calendarBorder {
-    border: 6px solid var(--blue);
+    border: 6px solid #2A3B9F;
     border-radius: 10px;
 }
 
@@ -131,7 +121,7 @@ input[type=submit] {
 /*CalendarHeader*/
 .calendarHeader {
     padding: 0px 10px;
-    background-color: var(--white);
+    background-color: #ffffff;
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
     position: relative; 
@@ -142,7 +132,7 @@ input[type=submit] {
 
 #calendarTitle {
     font-size: 42px;
-    color: var(--blue);
+    color: #2A3B9F;
     font-family: 'Open Sans', sans-serif;
     font-weight: 800;
     float: left;
@@ -166,7 +156,7 @@ input[type=submit] {
 
 /*calendarTop*/
 .calendarLegend {
-    background-color: var(--lightBlue);
+    background-color: #EDF0F7;
     border-radius: 10px;
     padding: 15px;
     margin-right: 15px;
@@ -191,7 +181,7 @@ input[type=submit] {
 
 /*Calendar*/
 .calendarPadding {
-    background-color: var(--lightBlue);
+    background-color: #EDF0F7;
     padding: 7px;
     padding-bottom: 0 !important;
 }
@@ -210,7 +200,7 @@ input[type=submit] {
 }
 
 .calendarRow {
-    background-color: var(--partGray);
+    background-color: #e1e1e1;
 }
 
 .calendarTD,
@@ -233,7 +223,7 @@ input[type=submit] {
 
 .calTop {
     text-align: center;
-    background-color: var(--lightGray);
+    background-color: #d2d2d2;
 }
 
 .calenLine {
@@ -241,6 +231,6 @@ input[type=submit] {
     top: -12px;
     height: 8px;
     border-radius: 5px;
-    color: var(--partGray);
+    color: #e1e1e1;
     z-index: 2;
 }

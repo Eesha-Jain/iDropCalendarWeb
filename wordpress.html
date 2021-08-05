@@ -555,8 +555,9 @@
 
             async function generatePDF() {
                 document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please wait";
-                var doc = new jsPDF('l', 'mm', 'a4');
-                const width = 297;
+                var doc = new jsPDF('l', 'mm', [279.4, 215.9]);
+                const width = 279;
+                const height = 215;
 
                 var stringHTML = document.getElementById("theFrame").contentDocument.getElementsByClassName("calendarBox");
                 
@@ -564,9 +565,9 @@
                     await html2canvas(stringHTML[i], {
                         allowTaint: true,
                         useCORS: true,
-                        width: 1730
+                        width: 1600
                     }).then((canvas) => {
-                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 10, 5, width * 1.05, width * 0.68);
+                        doc.addImage(canvas.toDataURL("image/png"), 'PNG', 4, 5, width * 1.01, height * 0.95);
                     });
                     
                     if (i + 1 != stringHTML.length) {

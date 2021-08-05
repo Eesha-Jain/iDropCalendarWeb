@@ -118,6 +118,11 @@
                 outline: none;
             }
 
+            .customCode input[type="date"]::-webkit-calendar-picker-indicator {
+                width: 20px;
+                height: 20px;
+            }
+
             /*Edges*/
             .customCode .calendarWhite {
                 background-color: white;
@@ -269,7 +274,7 @@
             <div class="formContainer">
                 <div class="container">
                     <div class="title">
-                        <h1>Nanodropper Calendar</h1>
+                        <h1>iDrop Calendar</h1>
                     </div>
     
                     <form id="firstForm" class="form" onsubmit="return medicationSubmit()" method="POST">
@@ -281,7 +286,7 @@
                         <br>
     
                         <div class="question">
-                            <label class='label' for="appoint">When's your next appointment?</label>
+                            <label class='label' for="appoint">When's your next appointment (mm/dd/yyyy)? </label>
                             <input class='input' name="appoint" type="date" id="appoint" required>
                         </div>
         
@@ -322,7 +327,7 @@
                     string += '<br><input type="checkbox" name="medmor' + i + '" id="medmor' + i + '"><label name="medmor' + i + '">I take \"drop ' + i + '\" in the morning</label>';
                     string += '<br><input type="checkbox" name="medaft' + i + '" id="medaft' + i + '"><label  name="medaft' + i + '">I take \"drop ' + i + '\" in the afternoon</label>';
                     string += '<br><input type="checkbox" name="mednig' + i + '" id="mednig' + i + '"><label name="mednig' + i + '">I take \"drop ' + i + '\" in the night</label><br><br>';
-                    string += "<div class='question'><label class='label' for='meddrop" + i + "' required>Which eyes do you put \"drop " + i + "\"?</label><select name = 'meddrop" + i + "' id = 'meddrop" + i + "'><option value = 'Both'>Both</option><option value = 'Left'>Left</option><option value = 'Right'>Right</option></select></div><br><br>";
+                    string += "<div class='question'><label class='label' for='meddrop" + i + "' required>Which eye(s) do you put \"drop " + i + "\"?</label><select name = 'meddrop" + i + "' id = 'meddrop" + i + "'><option value = 'Both'>Both</option><option value = 'Left'>Left</option><option value = 'Right'>Right</option></select></div><br><br>";
                     string += "<br>";
                 }
 
@@ -369,7 +374,7 @@
                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
                 //Diamond & triangle from https://idevie.com/tutorials/make-shapes-with-css-how-to-create-different-shapes-in-css
-                var shapes = [['square', 'width: 15px; height: 15px;border:2px solid #293caa;'],['circle', 'width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4;'],['diamond', 'width: 13px; height: 13px; -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg);border:2px solid #7f7dde;'], ['triangle', 'width: 15px; height: 15px; -webkit-transform: skew(20deg); -moz-transform: skew(20deg); -o-transform: skew(20deg); border: 2px solid #5d8abd;']];
+                var shapes=[["square", '<div class="shape" id="square" style="width: 15px; height: 15px;border:2px solid #293caa; float: left;"></div>'], ["circle", '<div class="shape" id="circle" style="width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4; float: left;"></div>'], ["diamond", '<div class="shape" id="diamond" style="width: 13px; height: 13px; -ms-transform: rotate(45deg); -webkit-transform: rotate(45deg); transform: rotate(45deg);border:2px solid #7f7dde; float: left;"></div>'], ["star", '<i class="far fa-star fa-lg" style="color:#5d8abd; float: left;"></i>']]
 
                 var grid = {};
                 var str = "";
@@ -390,8 +395,13 @@
 
                     grid[i] = self;
                     var sum = Number(grid[i]['morning']) + Number(grid[i]['afternoon']) + Number(grid[i]['night']);
+
+                    var verb = "eye";
+                    if (grid[i]['drop'] == "Both") {
+                        verb = "eyes";
+                    }
                     
-                    str += '<div style="clear:both;"><p style="float: left;">Drop ' + i + ' - </p><div class="shape" id="' + shapes[i - 1][0] + '" style="' + shapes[i - 1][1] + '; float: left;"></div><p style="float: left;">: ' + grid[i]['name'] + '&emsp;' + sum + 'x / day &emsp;' + grid[i]['drop'] + ' eyes</p></div><br>';
+                    str += '<div style="clear:both;"><p style="float: left;">Drop ' + i + ' - </p>' + shapes[i - 1][1] + '<p style="float: left;">: ' + grid[i]['name'] + '&emsp;' + sum + 'x / day &emsp;' + grid[i]['drop'] + ' ' + verb + '</p></div><br>';
                 }
 
                 //The dates at the top of the custom generated calendar
@@ -416,15 +426,15 @@
 
                 for (var key in grid) {
                     if (grid[key]['morning'] == 1) {
-                        times[1][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                        times[1][i] = shapes[key - 1][1];
                     }
 
                     if (grid[key]['afternoon'] == 1) {
-                        times[2][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                        times[2][i] = shapes[key - 1][1];
                     }
 
                     if (grid[key]['night'] == 1) {
-                        times[3][i] = '<div class="shape calShape" id="' + shapes[key - 1][0] + '" style="' + shapes[key - 1][1] + '; float: left;"></div>';
+                        times[3][i] = shapes[key - 1][1];
                     }
 
                     i++;
@@ -452,7 +462,7 @@
                             total += "<td class='calendarTD' class='calendarDay'>";
 
                             if (dayOfTheWeek == 0 && day <= dayMonth) {
-                                times[0][1] = `<div class="shape calShape" id="${shapes[1][0]}" style="${shapes[1][1]}; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div>`;
+                                times[0][1] = `<div class="shape calShape" id="circle" style="width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div>`;
                                 total += "<table class='dosingTable' style='width: 100%; margin-top: 0; margin-bottom: 0 !important;'>";
                                     
                                 for (var l = 0; l < 4; l++) {
@@ -475,13 +485,19 @@
                         for (var j = 0; j < 7; j++) {
                             total += "<td class='calendarTD' class='calendarDay'>";
 
-                            if (dayOfTheWeek == 0 && day <= dayMonth) {
-                                total += `<div class="shape calShape" id=" ${shapes[1][0]}" style="${shapes[1][1]}; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div><br>
-                                    ${doses}`;
-                                day++;
-                            } else {
-                                dayOfTheWeek--;
-                            }
+                                if (dayOfTheWeek == 0 && day <= dayMonth) {
+                                    times[0][1] = `<div class="shape calShape" id="circle" style="width: 15px;height: 15px;border-radius: 50%;border: 2px solid #585bc4; border:1px solid black !important;width:23px !important; height: 23px !important; text-align: center; font-size: 12px;">${day}</div>`;
+                                    total += "<table class='dosingTable' style='width: 100%; margin-top: 0; margin-bottom: 0 !important;'>";
+                                    
+                                    for (var l = 0; l < 4; l++) {
+                                        total += "<tr><td>" + times[l][1] + "</td><td>" + times[l][2] + "</td><td>" + times[l][3] + "</td><td>" + times[l][4] + "</td><td>" + times[l][5] + "</td></tr>";
+                                    }
+                                    
+                                    total += "</table>";
+                                    day++;
+                                } else {
+                                    dayOfTheWeek--;
+                                }
 
                             total += "</td>"
                         }

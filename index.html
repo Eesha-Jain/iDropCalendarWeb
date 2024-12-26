@@ -55,6 +55,7 @@
             var appointment = "";
             var medNum = 0;
 
+            //Function run when button clicked
             function medicationSubmit() {
                 var num = document.getElementById("#medication").value;
                 appointment = document.getElementById("appoint").value;
@@ -76,6 +77,7 @@
                 return false;
             }
 
+            //Creates HTML code for calendar
             function generateCalendar(month, str, calDays, total) {
                 return `
                 <div class="calendarBox">
@@ -110,6 +112,7 @@
                 `;
             }
 
+            //Inserts specific medical information into calendar
             function medicationDetails() {
                 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
 
@@ -247,6 +250,7 @@
                 return false;
             }
 
+            //Converts calendar into downloadable PDF
             async function generatePDF() {
                 document.getElementById("customCalendarDownloadButton").innerHTML = "Downloading... Please don't move your screen";
                 var doc = new jsPDF('l', 'mm', 'a4');
